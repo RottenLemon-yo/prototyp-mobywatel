@@ -1,5 +1,6 @@
 # prototyp-mobywatel
 Prototyp aplikacji mObywatel.ai z wprowadzonym systemem bezpieczeństwa pozwalającym lepiej ukryć wrażliwe dane przed niewłaściwymi jednostkami. Aplikacja wykorzystuje fikcyjne dane do celów demonstracyjnych i testowych. Nie jest oficjalną usługą administracji publicznej.
+# By projekt pracował poprawnie trzeba włączyć "login.html"
 
 # mObywatel.ai: pełna wersja prototypu do uruchomienia u siebie
 
