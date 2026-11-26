@@ -1,0 +1,69 @@
+:root{
+  --bg:#f2f3f7; --surface:#ffffff; --ink:#111216; --ink2:#5f6270; --ink3:#8b8e9a; --hair:#e3e5eb;
+  --red:#dc143c; --red-dark:#b30f30; --red-wash:#fdecef;
+  --sans:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter",system-ui,sans-serif;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%}
+body{
+  min-height:100vh;background:#d9dce4;font-family:var(--sans);color:var(--ink);
+  display:flex;align-items:center;justify-content:center;
+  -webkit-font-smoothing:antialiased;
+}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;padding:0}
+button:focus-visible,input:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+
+/* ramka telefonu jak w index.html */
+.phone{
+  position:relative;width:390px;height:844px;border-radius:54px;overflow:hidden;background:var(--bg);
+  box-shadow:0 0 0 10px #16171a,0 0 0 11px #3b3d42,0 50px 90px -20px rgba(20,22,30,.45);
+  display:flex;flex-direction:column;
+}
+.demo-strip{
+  background:var(--red-wash);color:var(--red);text-align:center;font-size:9px;font-weight:700;
+  letter-spacing:.25px;padding:8px 5px;
+}
+.inner{padding:26px 24px 22px;flex:1;display:flex;flex-direction:column;overflow-y:auto}
+
+.brand{display:flex;align-items:center;gap:10px;margin-bottom:56px}
+.brand-mark{width:34px;height:34px;border-radius:9px;display:block}
+.brand-name{font-size:19px;font-weight:700;letter-spacing:-.01em}
+.brand-demo{font-size:12px;color:var(--ink2);margin-left:6px}
+
+.shield{width:58px;height:58px;border-radius:20px;background:var(--red-wash);display:grid;place-items:center;color:var(--red);margin-bottom:22px}
+.shield svg{width:26px;height:26px}
+h1{font-size:27px;letter-spacing:-.02em;margin:0 0 13px;line-height:1.15}
+.intro{color:var(--ink2);font-size:15.5px;line-height:1.45;margin:0 0 26px}
+
+label{font-size:14px;font-weight:600;display:block;margin:0 0 9px}
+input{
+  width:100%;height:51px;border:1px solid var(--hair);border-radius:15px;background:var(--surface);
+  padding:0 16px;font:inherit;font-size:16px;color:var(--ink);outline:none;margin-bottom:19px;
+}
+input::placeholder{color:var(--ink3)}
+input:focus{border-color:var(--red);box-shadow:0 0 0 3px rgba(220,20,60,.12)}
+input.bad{border-color:var(--red)}
+.password-wrap{position:relative}
+.password-wrap input{padding-right:48px}
+.toggle{position:absolute;right:6px;top:4px;width:43px;height:43px;display:grid;place-items:center;color:var(--ink2)}
+.toggle svg{width:22px;height:22px}
+.err{color:var(--red);font-size:13.5px;margin:-8px 0 14px}
+
+.login{width:100%;height:50px;border-radius:15px;background:var(--red);color:#fff;font-size:16px;font-weight:600}
+.login:active{background:var(--red-dark)}
+.forgot{display:block;text-align:center;margin:23px 0 25px;color:var(--red);text-decoration:none;font-size:15px;font-weight:500}
+
+details{border-top:1px solid var(--hair);padding-top:20px;color:var(--ink2);font-size:12.5px}
+summary{cursor:pointer;color:var(--ink2)}
+.demo-details{line-height:1.55;padding-top:14px}
+.demo-details p{margin:0 0 10px}
+.footer{text-align:center;color:var(--ink3);font-size:11px;margin-top:auto;padding-top:35px}
+.footer svg{width:13px;height:13px;vertical-align:-3px;margin-right:4px}
+
+@media (max-width:520px){
+  body{display:block;background:var(--bg)}
+  .phone{width:100vw;height:100dvh;border-radius:0;box-shadow:none}
+  .inner{padding:24px 24px calc(20px + env(safe-area-inset-bottom))}
+  .brand{margin-bottom:48px}
+}
+@media (max-height:700px){.brand{margin-bottom:28px}}

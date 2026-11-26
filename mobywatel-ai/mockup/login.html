@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f2f3f7">
+<title>mObywatel — logowanie</title>
+<link rel="icon" href="assets/icon-mobywatel.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="login.css?v=2">
+</head>
+<body>
+<main class="phone" aria-label="Makieta ekranu logowania">
+  <div class="demo-strip">PROTOTYP — FIKCYJNE DANE — BEZ POŁĄCZENIA Z USŁUGAMI</div>
+  <div class="inner">
+    <div class="brand">
+      <img class="brand-mark" src="assets/icon-mobywatel.svg" alt="">
+      <div><span class="brand-name">mObywatel</span><span class="brand-demo">prototyp</span></div>
+    </div>
+    <div class="shield" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3 19 6v5c0 5-3.3 8.4-7 10-3.7-1.6-7-5-7-10V6l7-3Z"/>
+        <path d="m9 12 2 2 4-4"/>
+      </svg>
+    </div>
+    <h1>Dobrze Cię widzieć</h1>
+    <p class="intro">Zaloguj się, aby przejść do swoich dokumentów i spraw.</p>
+    <form id="demoForm" novalidate>
+      <label for="email">Adres e-mail</label>
+      <input id="email" type="email" value="demo@obywatel.test" autocomplete="off" aria-label="Adres e-mail demonstracyjny">
+      <label for="password">Hasło</label>
+      <div class="password-wrap">
+        <input id="password" type="password" placeholder="Wpisz hasło testowe" autocomplete="off" aria-label="Hasło testowe">
+        <button class="toggle" type="button" id="togglePassword" aria-label="Pokaż lub ukryj hasło">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="2.8"/></svg>
+        </button>
+      </div>
+      <p class="err" id="err" role="alert" hidden></p>
+      <button class="login" type="submit">Zaloguj się</button>
+    </form>
+    <a class="forgot" href="#" id="forgot">Nie pamiętasz hasła?</a>
+    <details>
+      <summary>Dane do testowania prototypu</summary>
+      <div class="demo-details">
+        <p>E-mail: <strong>demo@obywatel.test</strong></p>
+        <p>Hasło główne: <strong>Demo123!</strong></p>
+        <p>Hasło alarmowe: <strong>Alarm123!</strong></p>
+        <p>To wyłącznie makieta wyglądu. Nie wpisuj prawdziwych danych logowania.</p>
+      </div>
+    </details>
+    <div class="footer">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3 19 6v5c0 5-3.3 8.4-7 10-3.7-1.6-7-5-7-10V6l7-3Z"/><path d="m9 12 2 2 4-4"/></svg>
+      Prototyp demonstracyjny — bez połączenia z usługami
+    </div>
+  </div>
+</main>
+<script src="login.js?v=2"></script>
+</body>
+</html>
