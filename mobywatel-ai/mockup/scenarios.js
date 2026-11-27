@@ -1,3 +1,11 @@
+/* tryb alarmowy: scenariusze mają wpisane na sztywno dane Marty (numer dowodu, rejestracja, maska PESEL), więc podmieniamy je tak samo jak w osoby.js.
+   Bez przeliczania PESEL, bo te same funkcje wyświetlają też karty z serwera, które są już podmienione. */
+if(window.ALARM){
+ const _say=say,_info=info,_cc=confirmCard;
+ say=t=>_say(typeof t==='string'?alarmuj(t,'marta',true):t);
+ info=o=>_info(alarmuj(o,'marta',true));
+ confirmCard=o=>_cc(alarmuj(o,'marta',true));
+}
 /* tryb skryptowy (bez serwera): zastrzec = w bankach (SDZ), zablokować = zawieszenie e-dowodu na 14 dni, unieważnić = na stałe */
 const OFF={zastrz:false,zab:false,uniew:false};
 const dPlus=n=>{const d=new Date();d.setDate(d.getDate()+n);return d.toLocaleDateString('pl-PL',{day:'2-digit',month:'2-digit',year:'numeric'})};
@@ -209,8 +217,8 @@ $('#newBtn').onclick=()=>{closeHist();newConv();input.focus()};
 $('#hmenu .scrim').onclick=closeHist;
 $('#hnew').onclick=()=>{closeHist();newConv();input.focus()};
 $('#homeBtn').onclick=()=>{
- // na ekranie głównym orzełek prowadzi na stronę startową (z prefiksem języka, np. /de/)
- if(!app.classList.contains('chatting')&&!$('#detail').classList.contains('on')){const m=location.pathname.match(/^\/([a-z]{2})\//);location.href=m?'/'+m[1]+'/':'/';return}
+ // na ekranie głównym godło wraca do ekranu logowania (względny adres działa lokalnie i na GitHub Pages), żeby można było zalogować się innym hasłem
+ if(!app.classList.contains('chatting')&&!$('#detail').classList.contains('on')){location.href='login.html';return}
  $('#detail').classList.remove('on');exitChat();$('#tiles').scrollTo({left:0,behavior:'smooth'})};
 $('#mailBtn').onclick=()=>{closeHist();startTopic('Co mam w skrzynce?')};
 $('#bellBtn').onclick=()=>{closeHist();startTopic('Co mam do załatwienia?')};
