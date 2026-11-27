@@ -1,0 +1,116 @@
+# Dlaczego mam wątpliwości co do wykorzystania sztucznej inteligencji w mObywatelu?
+
+## Nie każda technologia potrzebuje sztucznej inteligencji
+
+Nie jestem przeciwna sztucznej inteligencji. Widzę jej zastosowania w wielu obszarach i sama ją wykorzystuję w swoim projekcie. Mam jednak poważne zastrzeżenia co do implementacji modeli językowych w systemach, które przechowują dane osobowe, dokumenty tożsamości i umożliwiają działania o charakterze prawnym lub finansowym. Błąd w systemie administracyjnym może oznaczać utratę danych osobowych, problemy prawne lub zakłócenie ważnej sprawy. Stąd uważam, że przy projektowaniu takich systemów priorytetem powinna być przewidywalność i bezpieczeństwo.
+
+## Problem z interpretacją poleceń przez sztuczną inteligencję
+
+Model językowy nie działa jak tradycyjna forma sztywnych reguł. Interpretuje on polecenia od użytkownika na podstawie kontekstu i prawdopodobieństwa. Stwarza to pole do błędów. Użytkownik może powiedzieć coś nieprecyzyjnie, użyć skrótu myślowego, zmienić temat lub poruszyć kilka tematów jednocześnie. Model może wtedy błędnie zinterpretować zadanie.
+
+W szczególności jest to ryzykowne, gdy asystent ma dostęp do narzędzi wykonujących rzeczywiste operacje. W prototypie asystent może między innymi:
+
+- przygotować i wykonać płatność,
+- wysłać list,
+- złożyć wniosek,
+- zablokować lub usunąć dokument.
+
+Nawet jeśli użytkownik będzie musiał potwierdzić czynność, to nie mamy pewności, czy przeciętny obywatel zawsze zauważy, że sztuczna inteligencja źle zrozumiała jego polecenie? Nie można założyć, że przeczyta wszystkie szczegóły potwierdzenia. Dotyczy to szczególnie osób starszych, osób z problemami poznawczymi oraz osób korzystających z aplikacji pod presją czasu.
+
+## Rozpoznawanie mowy stanowi dodatkowe źródło ryzyka
+
+Asystent głosowy wydaje się wygodnym rozwiązaniem, szczególnie dla osób starszych i tych, które mają trudności z nawigacją po interfejsie. Jednak komunikacja głosowa nie jest pozbawiona błędów.
+
+Rozpoznawanie mowy może:
+
+- mylić słowa,
+- mylić liczby,
+- błędnie rozpoznawać nazwiska,
+- błędnie rozpoznawać nazwy usług,
+- niepoprawnie interpretować wypowiedzi zawierające negację.
+
+W przypadku asystenta wykonującego zadania administracyjne konieczne są dodatkowe środki bezpieczeństwa, takie jak kilkukrotne upewnianie się co do poprawności działania i zgody użytkownika.
+
+Istnieje również problem przypadkowej aktywacji asystenta. System głosowy może zostać uruchomiony przypadkowo, a wyrwana z kontekstu wypowiedź może zostać zinterpretowana jako polecenie.
+
+## Ważność informacji i odpowiedzialność za błędy
+
+Informacje administracyjne nie są statyczne i sam model językowy nie gwarantuje dostępu do aktualnych informacji. Nawet jeśli posiada bazę wiedzy, musi być ona regularnie aktualizowana, a odpowiedzi muszą opierać się na wiarygodnych źródłach.
+
+Ponadto są udokumentowane przypadki, w których asystent AI podał nieistniejące informacje i przekonywał, że są one wiarygodne. Testy potwierdzają, że bardziej rozwinięte modele są bardziej podatne na takie działania określane jako „halucynacje AI”[^1].
+
+Nie chciałabym, aby obywatel otrzymywał nieprawidłowe instrukcje dotyczące dokumentu tylko dlatego, że model wygenerował przekonującą odpowiedź.
+
+## Prywatność i dostęp do danych osobowych
+
+Asystent zaprojektowany do pomocy w korzystaniu z mObywatela potrzebuje kontekstu. Im więcej wie o użytkowniku, tym łatwiej może wykonywać zadania. Oznacza to, że podczas rozmowy przetwarzanych jest więcej danych.
+
+Należy odpowiedzieć na następujące pytania:
+
+- Jakie dane model faktycznie musi otrzymywać?
+- Czy PESEL i numery dokumentów muszą być przesyłane do dostawcy sztucznej inteligencji?
+- Czy historia rozmów jest przechowywana?
+- Kto ma dostęp do logów?
+- Czy użytkownik może korzystać z asystenta bez udostępniania danych zewnętrznemu dostawcy?
+- Co dzieje się z danymi w przypadku awarii, wycieku lub nieautoryzowanego dostępu?
+
+## Sztuczna inteligencja nie powinna odpowiadać za podejmowanie decyzji
+
+Martwi mnie również kierunek rozwoju asystentów AI. Coraz częściej oczekuje się od nich nie tylko odpowiadania na pytania, ale także samodzielnego wykonywania zadań.
+
+W przypadku mObywatela nie widzę potrzeby dawania modelowi aż tak dużej swobody. Model może pomóc zrozumieć, czego chce użytkownik, ale nie powinien samodzielnie decydować o konsekwencjach prawnych lub finansowych.
+
+Każdy kolejny poziom uprawnień oznacza większą odpowiedzialność i większe ryzyko.
+
+## Dostępność nie może oznaczać uzależnienia od sztucznej inteligencji
+
+Jednym z argumentów przemawiających za asystentami jest to, że ułatwiają oni korzystanie z aplikacji osobom starszym i mniej zaznajomionym z technologią.
+
+Nie jestem jednak przekonana, że rozmowa z SI jest dla nich najlepszym rozwiązaniem. Korzystanie z modelu językowego wymaga pewnej wiedzy i umiejętności. Użytkownik musi wiedzieć, jak zadawać pytania, kiedy doprecyzować polecenie, a kiedy nie ufać otrzymanej odpowiedzi.
+
+Osoba, która nie rozumie działania SI, może traktować ją jak prawdziwą osobę.
+
+## Jak widzę bezpieczniejsze korzystanie ze sztucznej inteligencji?
+
+Moim zdaniem bezpieczniejszym rozwiązaniem byłoby:
+
+- wykorzystywanie sztucznej inteligencji do wyszukiwania usług i wyjaśniania procedur;
+- pozyskiwanie informacji bezpośrednio z aktualnych, oficjalnych źródeł;
+- delegowanie operacji do tradycyjnego, kontrolowanego mechanizmu aplikacji;
+- wymaganie wyraźnego potwierdzenia każdej operacji przez użytkownika;
+- zapewnienie możliwości korzystania z aplikacji bez asystenta sztucznej inteligencji;
+- ograniczenie danych dostarczanych do modelu do absolutnego minimum.
+
+Najważniejsze dla mnie jest to, aby sztuczna inteligencja nie była jedynym sposobem obsługi aplikacji.
+
+## Wątpliwości dotyczące biometrycznego rozpoznawania twarzy
+
+Mam również wątpliwości dotyczące wykorzystywania skanowania twarzy jako metody uwierzytelniania użytkownika.
+
+Przykładowe źródła zdjęć:
+
+- Facebook, Instagram i inne portale społecznościowe,
+- fotografie publikowane przez rodzinę i znajomych,
+- zdjęcia wykonywane w miejscach publicznych,
+- fotografie studentów publikowane na stronach uczelni,
+- zdjęcia osób publicznych i pracowników instytucji.
+
+## Alternatywa – uwierzytelnianie odciskiem palca
+
+W przypadku aplikacji mobilnej rozważyłabym wykorzystanie uwierzytelniania odciskiem palca jako alternatywy dla rozpoznawania twarzy.
+
+Najważniejsze jest wykorzystanie mechanizmu uwierzytelniania, który nie wymaga od aplikacji bezpośredniego dostępu do wrażliwych danych biometrycznych.
+
+> Nie chciałabym, aby aplikacja przechowująca tak dużą część tożsamości obywatela tworzyła kolejny zbiór danych biometrycznych, którego bezpieczeństwo musiałaby samodzielnie gwarantować.
+
+## Podsumowanie
+
+Projektując mObywatela z kodem alarmowym, chciałam przede wszystkim rozwiązać problem bezpieczeństwa danych osobowych i zmniejszyć ilość informacji, którymi użytkownik być może musi się dzielić z innymi.
+
+Z jednej strony asystent AI może uprościć korzystanie z aplikacji. Z drugiej strony wprowadza dodatkowe ryzyka.
+
+> W systemie administracyjnym technologia powinna być przede wszystkim przewidywalna. Musi być bezpieczna, zrozumiała i możliwa do audytu przez ludzi.
+
+## Przypis
+
+[^1]: Daniel E. Ho, *Hallucinating Law: Legal Mistakes with Large Language Models are Pervasive*, Stanford HAI, 2024.
