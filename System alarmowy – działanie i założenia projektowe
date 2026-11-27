@@ -1,0 +1,231 @@
+# System alarmowy – działanie i założenia projektowe
+
+## Cel systemu
+
+System alarmowy ma chronić dane osobowe użytkownika w sytuacji, w której zostaje on zmuszony do odblokowania telefonu i pokazania zawartości aplikacji.
+
+Jego podstawowym założeniem jest możliwość zalogowania się do aplikacji przy użyciu alternatywnego hasła alarmowego.
+
+Po jego wpisaniu aplikacja wyświetla tę samą osobę, jednak część danych identyfikacyjnych zostaje zastąpiona innymi wartościami. Dzięki temu osoba kontrolująca telefon nie otrzymuje prawdziwych danych użytkownika, a sam ekran aplikacji nie sygnalizuje w oczywisty sposób, że uruchomiono tryb alarmowy.
+
+---
+
+## Dwa hasła logowania
+
+Na ekranie logowania dostępne są dwa warianty uwierzytelnienia:
+
+- **Hasło główne** – otwiera aplikację z normalnymi danymi użytkownika.
+- **Hasło alarmowe** – otwiera aplikację w trybie alarmowym, z podmienionymi danymi.
+
+W finalnej wersji aplikacja będzie wymuszać, aby hasło alarmowe było inne od głównego. Ma to uchronić przed przypadkowym wpisaniem niewłaściwego hasła.
+
+W prototypie rozpoznanie hasła odbywa się w pliku `login.js`. Po jego sprawdzeniu aplikacja zapisuje odpowiednią informację o trybie działania:
+
+- `mobLogin` w `sessionStorage` określa rodzaj logowania;
+- `mobAlarm` w `localStorage` przechowuje informację o aktywnym trybie alarmowym.
+
+---
+
+## Jak zmieniają się dane użytkownika?
+
+Najważniejszą częścią mechanizmu jest zastępowanie wybranych informacji w danych użytkownika.
+
+### System zachowuje:
+
+- imię i nazwisko,
+- zdjęcie profilowe,
+- podstawową tożsamość wizualną użytkownika.
+
+### System podmienia:
+
+- numer PESEL,
+- numer dowodu i innych dokumentów,
+- numery rejestracyjne pojazdów,
+- numery polis ubezpieczeniowych,
+- numery kont oraz inne identyfikatory,
+- numer telefonu,
+- adres zamieszkania,
+- adres e-mail.
+
+### Mechanizm podmiany
+
+W pliku `osoby.js` znajduje się zestaw zdefiniowanych zamian dla poszczególnych profili.
+
+Przykład:
+
+| Rodzaj danych | Dane główne | Dane alarmowe |
+|--------------|------------|---------------|
+| Numer dokumentu | DFT 220419 | DGW 584036 |
+| Rejestracja auta | GD 8K113 | GD 3M672 |
+| Polisa OC | EH 330 128 774 | EH 471 905 362 |
+| Numer albumu | 198442 | 204517 |
+| Adres | Grunwaldzka 102 | Grunwaldzka 87 |
+
+W przypadku numeru PESEL zastosowano dodatkową funkcję, która zmienia wybrane cyfry i ponownie oblicza cyfrę kontrolną.
+
+---
+
+## Integracja z asystentem AI
+
+System alarmowy uwzględnia również asystenta AI. Jest to szczególnie ważne, ponieważ sama zmiana informacji na ekranie nie wystarczyłaby, gdyby asystent nadal miał dostęp do prawdziwych danych użytkownika.
+
+W pliku `mockup/agent.js` podczas wysyłania zapytania do serwera przekazywana jest informacja o aktywnym trybie:
+
+- standardowy identyfikator osoby,
+- identyfikator osoby zakończony oznaczeniem `:alarm`.
+
+Po stronie serwera plik `persony.py` rozpoznaje to oznaczenie i pobiera odpowiednią wersję danych użytkownika.
+
+Następnie funkcja `_alarmuj()` stosuje te same podmiany co mechanizm działający w aplikacji.
+
+Dzięki temu asystent otrzymuje dane alarmowe, a nie podstawowy zestaw danych użytkownika.
+
+Ma to znaczenie również podczas rozmowy. Przykładowo, jeżeli użytkownik zapyta asystenta o numer rejestracyjny swojego samochodu, w trybie alarmowym powinien otrzymać wartość alarmową.
+
+---
+
+## Ograniczenia obecnej implementacji
+
+Obecny mechanizm jest demonstracją koncepcji, a nie gotowym systemem, dlatego warto wskazać kilka ograniczeń:
+
+- hasła demonstracyjne są zapisane bezpośrednio w kodzie JavaScript;
+- tryb alarmowy jest zapisywany w `localStorage`;
+- dane alarmowe są wcześniej przygotowanymi wartościami, a nie danymi pochodzącymi z odrębnego, bezpiecznego źródła;
+- mechanizm nie został przedstawiony jako kryptograficzna ochrona danych ani jako rozwiązanie odporne na analizę techniczną urządzenia.
+
+W wersji produkcyjnej konieczne byłoby zaprojektowanie:
+
+- bezpiecznego uwierzytelniania,
+- izolacji danych,
+- ochrony pamięci aplikacji,
+- pełnej obsługi wszystkich kanałów, przez które informacje mogą być ujawniane.
+
+---
+
+## Procedura wersji produkcyjnej – reakcja serwerów na alarm
+
+W docelowej wersji aplikacji hasło alarmowe nie powinno ograniczać się wyłącznie do podmiany danych widocznych na ekranie.
+
+Jego uruchomienie powinno inicjować dodatkową procedurę bezpieczeństwa po stronie serwerów.
+
+### Uruchomienie alarmu
+
+W momencie wpisania hasła alarmowego aplikacja wysyła do serwera informację o aktywacji trybu alarmowego danego konta.
+
+Serwer rejestruje zdarzenie i uruchamia tymczasową blokadę oraz zastrzeżenie najważniejszych danych i funkcji użytkownika, w szczególności:
+
+- dokumentów tożsamości,
+- numeru PESEL,
+- danych pojazdów,
+- kart i innych wrażliwych informacji,
+- operacji umożliwiających wykorzystanie danych użytkownika.
+
+Celem jest ograniczenie możliwości wykorzystania przejętego telefonu do dalszego pozyskiwania danych lub wykonywania operacji w imieniu obywatela.
+
+Blokada powinna obejmować również odpowiednie operacje dostępne przez inne kanały systemu, a nie tylko samą aplikację.
+
+### Czas trwania alarmu
+
+Wstępnie zakładam, że aktywna blokada trwałaby od 12 do 24 godzin.
+
+Po upływie tego czasu system automatycznie kończyłby tymczasowy okres alarmowy, przywracając normalną dostępność konta po przejściu odpowiedniej procedury bezpieczeństwa.
+
+Czas ten ma dać użytkownikowi możliwość:
+
+- znalezienia się w bezpiecznym miejscu,
+- skontaktowania się z pomocą techniczną,
+- wyjaśnienia przyczyny uruchomienia alarmu.
+
+Dokładny czas blokady oraz sposób przywracania dostępu wymagają dalszego opracowania.
+
+### Opóźnione powiadomienie użytkownika
+
+Istotnym elementem procedury jest sposób informowania o aktywacji alarmu.
+
+Nie chciałabym, aby na ekranie telefonu pojawiało się natychmiastowe powiadomienie informujące o uruchomieniu trybu alarmowego.
+
+Osoba zmuszająca użytkownika do odblokowania telefonu mogłaby je zauważyć i zorientować się, że uruchomiono dodatkowe zabezpieczenie.
+
+Dlatego informacja o aktywacji alarmu byłaby przekazywana użytkownikowi z opóźnieniem, przykładowo po kilku godzinach, za pośrednictwem wiadomości e-mail lub innego wcześniej skonfigurowanego kanału kontaktu.
+
+Sposób i czas powiadomienia powinny uwzględniać bezpieczeństwo użytkownika, szczególnie w sytuacjach przemocy domowej lub bezpośredniego zagrożenia.
+
+### Kontakt z pomocą techniczną
+
+Użytkownik powinien mieć możliwość skontaktowania się z odpowiednią linią wsparcia lub pracownikiem odpowiedzialnym za obsługę takich zgłoszeń.
+
+Podczas kontaktu może wyjaśnić przyczynę uruchomienia alarmu i poprosić o wcześniejsze zakończenie blokady.
+
+Wstępnie zakładam, że pracownik mógłby skrócić pozostały czas oczekiwania o połowę, ale nie miałby możliwości całkowitego pominięcia okresu ochronnego.
+
+Przykład:
+
+- pierwotny okres blokady: 24 godziny;
+- po pozytywnym rozpatrzeniu zgłoszenia pozostały czas oczekiwania zostaje skrócony o połowę;
+- blokada nie zostaje natychmiast usunięta.
+
+Ma to ograniczyć ryzyko, że osoba zmuszająca użytkownika do kontaktu z pomocą techniczną będzie mogła natychmiast przywrócić pełny dostęp do danych.
+
+Szczegóły weryfikacji tożsamości podczas takiego kontaktu muszą zostać zaprojektowane tak, aby nie wymagały ujawnienia danych osobie, która może nadal kontrolować telefon użytkownika.
+
+---
+
+## Dalszy rozwój procedury
+
+Powyższy mechanizm jest wstępną koncepcją i wymaga dalszych konsultacji oraz testów.
+
+Szczególnej uwagi wymagają:
+
+- sposób komunikacji z użytkownikiem podczas aktywnego alarmu;
+- bezpieczeństwo powiadomień i możliwość ich przechwycenia;
+- zakres blokowanych dokumentów i operacji;
+- procedura przywracania pełnego dostępu;
+- przypadki przypadkowego uruchomienia alarmu;
+- możliwość ponownego uruchomienia alarmu;
+- sytuacje, w których zagrożenie nie ustaje po upływie 12–24 godzin.
+
+Hasło alarmowe ma chronić użytkownika nawet wtedy, gdy nie jest już w stanie samodzielnie kontrolować swojego telefonu.
+
+---
+
+## Najważniejsza zasada projektu
+
+System alarmowy opiera się na prostym założeniu:
+
+> **Użytkownik nie zawsze ma możliwość odmówienia pokazania telefonu. Dlatego bezpieczeństwo nie powinno zależeć wyłącznie od tego, czy uda mu się odmówić dostępu do aplikacji.**
+
+Hasło alarmowe ma stanowić dodatkową warstwę ochrony w sytuacji, w której standardowe zabezpieczenia zostały już przełamane przez przymus fizyczny lub psychiczny.
+
+Jego zadaniem jest ograniczenie ilości informacji, które napastnik może uzyskać, nawet jeśli użytkownik zostanie zmuszony do odblokowania urządzenia.
+
+---
+
+## Co skłoniło mnie do tego pomysłu
+
+W wakacje 2026 wydarzyła mi się nieprzyjemna sytuacja, przy której byłam pewna, że będę w stanie się wybronić. Byłam na zakupach, kiedy zaczepił mnie pracownik (nie będę podawać, kto to był ani gdzie pracował) i zaczął namawiać mnie do dołączenia do ich programu, czy też założenia konta w ich aplikacji.
+
+Próbowałam odejść. Udało mi się nawet przepchnąć kilka metrów dalej, aż w końcu stanął mi na wprost drogi.
+
+Następne 30 minut tej interakcji wyglądało dość absurdalnie. Zaczął bardzo uprzejmie wypytywać mnie o życie prywatne i zainteresowania, ale też prosił o coraz więcej danych osobowych.
+
+Poprosił o portfel i dokumenty potwierdzające tożsamość, ale na szczęście nie miałam ich tego dnia przy sobie. Wtedy zapytał o mObywatela.
+
+Próbowałam mówić, że nie pamiętam hasła, że nie pamiętam adresu e‑mail, że nie pamiętam hasła do skrzynki.
+
+Przez te 30 minut nie dość, że był zdeterminowany, by zdobyć te informacje, to najbardziej przerażało mnie to, że nie mogłam po prostu wstać i ponownie spróbować odejść.
+
+Na własnej skórze poznałam psychologiczne mechanizmy, takie jak presja społeczna i przymus psychiczny.
+
+Pomimo świadomości, że to, co się dzieje, zagraża moim danym, nie mogłam zmusić się do ruszenia z miejsca.
+
+Po wszystkim wróciłam do domu i od razu zaczęłam usuwać wszystkie konta oraz wnioski.
+
+To zdarzenie dało mi jednak do myślenia, jak łatwo tak naprawdę można zmusić kogoś do ujawnienia tak kluczowych informacji.
+
+Tym bardziej, gdy później dowiedziałam się, że nie byłam jedyna. Moi koledzy i koleżanki ze studiów również mieli podobne doświadczenia. Kilku z nich natknęło się nawet na to samo stoisko.
+
+Kiedy dowiedziałam się, że jest konkurs na nowego mObywatela, pierwszą rzeczą, która przyszła mi do głowy, był właśnie ten projekt.
+
+Wciąż wymaga wielu poprawek, ale nie da się zrobić wszystkiego w ciągu miesiąca.
+
+Mam po prostu nadzieję, że może pomóc w przyszłych projektach związanych z naszym bezpieczeństwem.
